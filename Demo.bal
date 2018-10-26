@@ -1,9 +1,24 @@
 import ballerina/io;
+import ballerina/http;
 
-function main(string... args) {
-    io:println("Hello, World!");
+
+
+endpoint http:Client backendClientEP {
+    url: "http://b.content.wso2.com/"
+};
+
+function main (string... args) {
+    
+    var  backendResponse =backendClientEP->get("/sites/all/ballerina-day/sample.json");
+    match backendResponse {
+        http:Response response=> {
+            json responseJson=check response.getJsonPayload();
+            io:println(responseJson);
+        }
+        error => {
+            //io:println(responseError.message);
+        }
+    }
+
 }
-
-function myFunction(){
-
-}
+//cant upload json file here!!
